@@ -15,10 +15,13 @@ const EnvSchema = z.object({
   WINSTON_TRANSPORTS_HTTP_PATH: z.string(),
   WINSTON_TRANSPORTS_HTTP_SSL: z.string().transform(val => Boolean(val)),
   PORT: z.string().transform(val => parseInt(val)),
-  API_VERSION: z.string()
+  API_VERSION: z.string(),
+  ENV: z.enum(['development', 'production', 'test'])
 })
 
 export type EnvType = z.infer<typeof EnvSchema> 
 
 const env: EnvType = EnvSchema.parse(process.env)
 export default env;
+
+// console.log(env)

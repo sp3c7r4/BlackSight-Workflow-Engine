@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import { ActionCategory } from "./action";
 import { AiCategory } from "./ai";
 import { IntegrationCategory } from "./integration";
@@ -8,9 +7,7 @@ import { TriggerCategory } from "./trigger";
 type Category = TriggerCategory | ActionCategory | LogicCategory | AiCategory | IntegrationCategory;
 type Type = 'trigger' | 'action' | 'logic' | 'ai' | 'integration';
 type Position = { x: number; y: number };
-type ObjectId = Schema.Types.ObjectId
 export interface Node<P = unknown> {
-  id: ObjectId;
   name: string;
   type: Type;
   category: Category;

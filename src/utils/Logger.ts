@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { Request } from 'express';
 
 type LoggerLevel = 'info' | 'warn' | 'error' | 'http' | 'verbose' | 'debug' | 'silly'
-const { combine, timestamp, json, colorize } = format
+const { combine, timestamp, errors, json, colorize } = format
 
 class Logger {
   private level: LoggerLevel | string = env.LOGGER_LEVEL || 'info'
@@ -42,7 +42,7 @@ class Logger {
 
   public fileLogger = createLogger({
     level: 'info',
-    format: combine(timestamp(), json()),
+    format: combine(timestamp(), errors({ stack: true }), json()),
     transports: [
       new transports.File({ filename: 'logs/error.log', level: 'error' }),
       new transports.File({ filename: 'logs/combined.log' })
@@ -62,3 +62,8 @@ class Logger {
 }
 
 export default Logger;
+
+const e = new Error("hi")
+
+// const me = new Logger().fileLogger
+// me.error(e)
