@@ -5,7 +5,7 @@ export type TriggerCategory = "form_submission" | "user_signup" | "bot_conversat
 type form_submission = {
     formId: string;
     userId: string;
-    data: Record<string, any>;
+    data: Record<string, unknown>;
 };
 
 type user_signup = {
@@ -23,7 +23,7 @@ type webhook_recieved = {
     url: string;
     method: "POST" | "GET";
     headers: Record<string, string>;
-    body: Record<string, any>;
+    body: Record<string, unknown>;
 };
 
 type time_based_trigger = {

@@ -29,9 +29,7 @@ export default function zValidator(type: string, schema: ZodSchema) {
       }
 
       // Validate the data
-      console.log(dataToValidate);
       const validatedData = await schema.parseAsync(dataToValidate);
-      console.log(validatedData);
 
       // Attach validated data back to request
       req[type] = validatedData;

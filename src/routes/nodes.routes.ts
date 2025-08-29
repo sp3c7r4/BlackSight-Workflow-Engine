@@ -1,22 +1,29 @@
 import { Request, Response, Router } from "express";
 import tryCatch from "../utils/TryCatch";
+import NodeController from "../controllers/node.controller";
+import { toObjectId } from "../types/Mongo";
 
 const nodeRouter = Router()
+const nodeController = new NodeController();
 
 /** Create a new workflow node */
 nodeRouter.post('/', tryCatch( async (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Welcome to the Nodes API' });
+  const r = await nodeController.createNode(req.body);
+  res.status(r.statusCode).json(r);
 }));
 
 /** List all nodes */
 nodeRouter.get('/', tryCatch( async (req: Request, res: Response) => {
-  res.status(200).json({ message: 'List of all nodes' });
+  const r = await nodeController.fetchNodes();
+  res.status(r.statusCode).json(r);
 }));
 
 /** Get specific node */
 nodeRouter.get('/:id', tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
-  res.status(200).json({ message: `Details of node ${id}` });
+  const objectId = toObjectId(id);
+  const r = await nodeController.fetchNode(objectId);
+  res.status(r.statusCode).json(r);
 }));
 
 /** Update specific node */

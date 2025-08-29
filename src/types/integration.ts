@@ -6,7 +6,7 @@ export type IntegrationParams = google_sheet | stripe | zapier | airtable | send
 type google_sheet = {
     spreadsheetId: string;
     range: string;
-    values: any[][];
+    values: unknown[][];
 };
 
 type stripe = {
@@ -18,14 +18,14 @@ type stripe = {
 
 type zapier = {
     webhookUrl: string;
-    data: Record<string, any>;
+    data: Record<string, unknown>;
 };
 
 type airtable = {
     baseId: string;
     tableName: string;
     recordId: string;
-    fields: Record<string, any>;
+    fields: Record<string, unknown>;
 };
 
 type sendgrid = {
