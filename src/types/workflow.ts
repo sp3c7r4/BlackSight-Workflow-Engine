@@ -1,3 +1,8 @@
+import { Schema } from "mongoose";
+import { Node } from ".";
+
+type ObjectId = Schema.Types.ObjectId
+
 interface Edge {
   source: string;
   target: string;
@@ -5,8 +10,9 @@ interface Edge {
 }
 
 export interface Workflow {
-  id: string;
+  id: ObjectId;
   name: string;
+  description: string;
   nodes: Node[];
-  edges: Edge[]
+  edges: Edge[];
 }

@@ -13,7 +13,21 @@ nodeRouter.get('/', (req: Request, res: Response) => {
 });
 
 /** Get specific node */
-nodeRouter.get('/:id', (req: Request))
+nodeRouter.get('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.status(200).json({ message: `Details of node ${id}` });
+});
 
+/** Update specific node */
+nodeRouter.put('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.status(200).json({ message: `Node ${id} updated` });
+});
+
+/** Delete specific node */
+nodeRouter.delete('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  res.status(200).json({ message: `Node ${id} deleted` });
+});
 
 export default nodeRouter;
