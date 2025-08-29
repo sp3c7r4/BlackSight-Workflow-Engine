@@ -1,0 +1,12 @@
+*test.*
+
+# env
+.env
+
+# Logs
+logs/
+
+node_modules/
+
+#build
+dist/

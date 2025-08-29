@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "CommonJS",
+    "strict": true,
+    "outDir": "dist",
+    "noImplicitAny": false,
+    "rootDir": "src",
+    "esModuleInterop": true,
+  }, "exclude": [
+    "eslint.config.mts",
+    "tsconfig.json",
+    "test.ts"
+  ],
+}
