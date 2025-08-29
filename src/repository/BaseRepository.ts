@@ -1,7 +1,6 @@
 import { Model, Document, Types } from "mongoose";
-import Logger from "../utils/Logger";
-import env from "../config/env";
 import { CE_BAD_REQUEST } from "../utils/Error";
+import { consoleErrorLog } from "../utils/Logger";
 
 export interface BaseRepositoryInterface<T extends Document> {
   create(data: Partial<T>): Promise<T | null>;
@@ -11,15 +10,7 @@ export interface BaseRepositoryInterface<T extends Document> {
   delete(id: Types.ObjectId): Promise<boolean>;
 }
 
-const logInstance = new Logger()
-const ENV = env.ENV
 
-
-const consoleErrorLog = (e: Error | string) => {
-  if (ENV === 'development') {
-    logInstance.logger.error(e)
-  }
-}
 
 export default class BaseRepository<T extends Document> implements BaseRepositoryInterface<T> {
   constructor(private model: Model<T>, private modelName: string) {}

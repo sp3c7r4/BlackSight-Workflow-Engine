@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type TriggerCategory = "form_submission" | "user_signup" | "bot_conversation_start" | "webhook_recieved" | "time_based_trigger";
+export type TriggerCategory = "form_submission" | "user_signup" | "bot_conversation_start" | "webhook_received" | "time_based_trigger";
 
 type form_submission = {
     formId: string;
@@ -34,7 +34,7 @@ type TriggerParamsMap = {
     form_submission: form_submission;
     user_signup: user_signup;
     bot_conversation_start: bot_conversation_start;
-    webhook_recieved: webhook_recieved;
+    webhook_received: webhook_recieved;
     time_based_trigger: time_based_trigger;
 };
 

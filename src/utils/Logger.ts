@@ -5,6 +5,7 @@ import { Request } from 'express';
 
 type LoggerLevel = 'info' | 'warn' | 'error' | 'http' | 'verbose' | 'debug' | 'silly'
 const { combine, timestamp, errors, json, colorize } = format
+const ENV = env.ENV
 
 class Logger {
   private level: LoggerLevel | string = env.LOGGER_LEVEL || 'info'
@@ -61,9 +62,15 @@ class Logger {
   })
 }
 
+const logInstance = new Logger()
+
 export default Logger;
 
-const e = new Error("hi")
+export const consoleErrorLog = (e: Error | string) => {
+  if (ENV === 'development') {
+    logInstance.logger.error(e)
+  }
+}
 
 // const me = new Logger().fileLogger
 // me.error(e)

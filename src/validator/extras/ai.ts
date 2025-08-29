@@ -23,3 +23,8 @@ export const aiIntentDetectionSchema = z.object({
   text: z.string().min(5),
   intent: z.string(),
 });
+
+export const analyzeSentimentSchema = z.object({
+  text: z.string().min(5),
+  sentiment: z.enum(["positive", "negative", "neutral"]),
+});
