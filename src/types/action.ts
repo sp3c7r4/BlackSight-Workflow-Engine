@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type ActionCategory = "send_email" | "send_sms" | "assign_tag" | "update_crm_record" | "send_to_webhook" | "notify_admin";
+export type ActionType = "send_email" | "send_sms" | "assign_tag" | "update_crm_record" | "send_to_webhook" | "notify_admin";
 export type ActionParams = send_email | send_sms | assign_tag | update_crm_record | send_to_webhook | notify_admin;
 
 type send_email = {
@@ -45,9 +45,9 @@ type ActionParamsMap = {
   notify_admin: notify_admin;
 };
 
-export interface ActionNode<C extends ActionCategory> extends Node<ActionParamsMap[C]> {
-  type: "action";
-  category: C;
+export interface ActionNode<C extends ActionType> extends Node<ActionParamsMap[C]> {
+  category: "action";
+  type: C;
 }
 
 // const me: ActionNode<"assign_tag"> = {

@@ -9,10 +9,10 @@ const tryCatch = (controller: (req: Request, res: Response) => Promise<void>) =>
       await controller(req, res);
     } catch (error: CustomError | unknown) {
       if (error instanceof CustomError) {
-        const { status, status_code } = error;
+        const { status, status_code, message, data } = error;
         switch (status) {
           case "BAD_REQUEST":
-            res.status(400).json(BAD_REQUEST("Bad request", { error: error.message }));
+            res.status(400).json(BAD_REQUEST(message, data));
             break;
           case "INTERNAL_SERVER_ERROR":
             res.status(status_code).json(INTERNAL_SERVER_ERROR(error.message));

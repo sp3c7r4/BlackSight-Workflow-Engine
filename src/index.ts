@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
-import connectRedis, { redis } from './utils/Redis';
+import connectRedis, { redis } from './db/Redis';
 import env from './config/env';
 import Logger from './utils/Logger';
 import chalk from 'chalk';
 import nodeRouter from './routes/nodes.routes';
 import instanceRouter from './routes/instances.routes';
 import workflowRouter from './routes/workflows.routes';
+import connectNoSql from './db/Mongo';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(`${ROOT_PATH}/workflows`, workflowRouter);
 app.use(`${ROOT_PATH}/instances`, instanceRouter);
 
 (async () => {
+  await connectNoSql();
   await connectRedis(redis);
 })()
 
@@ -36,6 +38,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  log.info(`Server running on port ${PORT}`);
   console.log(`Access the API at ${chalk.green(`http://localhost:${PORT}`)} 🌐\n`);
+  log.info(`Server running on port ${PORT}`);
 });

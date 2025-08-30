@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type AiCategory = "text_generation" | "ai_summarizer" | "ai_intent_detection" | "analyze_sentiment";
+export type AiType = "text_generation" | "ai_summarizer" | "ai_intent_detection" | "analyze_sentiment";
 export type AiParams = TextGeneration | AiSummarizer | AiIntentDetection ;
 
 type TextGeneration = {
@@ -25,9 +25,9 @@ type AiParamsMap = {
   analyze_sentiment: unknown; // Add fields if needed for this category
 };
 
-export interface AiNode<C extends AiCategory> extends Node<AiParamsMap[C]> {
-  type: "ai";
-  category: C;
+export interface AiNode<C extends AiType> extends Node<AiParamsMap[C]> {
+  type: C;
+  category: "ai";
 }
 
 // const me: AiNode<"text_generation"> = {

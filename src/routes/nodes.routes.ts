@@ -2,12 +2,15 @@ import { Request, Response, Router } from "express";
 import tryCatch from "../utils/TryCatch";
 import NodeController from "../controllers/node.controller";
 import { toObjectId } from "../types/Mongo";
+import { validateBody, validateParams } from "../validator";
+import { createNodeSchema, IDSchema } from "../validator/schemas";
 
 const nodeRouter = Router()
 const nodeController = new NodeController();
 
 /** Create a new workflow node */
-nodeRouter.post('/', tryCatch( async (req: Request, res: Response) => {
+nodeRouter.post('/', validateBody(createNodeSchema), tryCatch( async (req: Request, res: Response) => {
+  console.log("me")
   const r = await nodeController.createNode(req.body);
   res.status(r.statusCode).json(r);
 }));
@@ -19,7 +22,7 @@ nodeRouter.get('/', tryCatch( async (req: Request, res: Response) => {
 }));
 
 /** Get specific node */
-nodeRouter.get('/:id', tryCatch( async (req: Request, res: Response) => {
+nodeRouter.get('/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   const objectId = toObjectId(id);
   const r = await nodeController.fetchNode(objectId);
@@ -27,13 +30,13 @@ nodeRouter.get('/:id', tryCatch( async (req: Request, res: Response) => {
 }));
 
 /** Update specific node */
-nodeRouter.put('/:id', tryCatch( async (req: Request, res: Response) => {
+nodeRouter.put('/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Node ${id} updated` });
 }));
 
 /** Delete specific node */
-nodeRouter.delete('/:id', tryCatch( async (req: Request, res: Response) => {
+nodeRouter.delete('/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Node ${id} deleted` });
 }));

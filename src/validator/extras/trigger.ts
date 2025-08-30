@@ -1,4 +1,5 @@
 import z from "zod";
+import { objectIdSchema } from "../../types/Mongo";
 
 export const createTriggerNodeSchema = z.object({
   name: z.string().min(2).max(100),
@@ -10,20 +11,20 @@ export const createTriggerNodeSchema = z.object({
 });
 
 export const formSubmissionSchema = z.object({
-  formId: z.string().uuid(),
-  userId: z.string().uuid(),
+  formId: objectIdSchema,
+  userId: objectIdSchema,
   data: z.record(z.string(), z.any()),
 });
 
 export const userSignupSchema = z.object({
-  userId: z.string().uuid(),
+  userId: objectIdSchema,
   email: z.string().email(),
   name: z.string().min(2).max(100),
 });
 
 export const botConversationStartSchema = z.object({
-  userId: z.string().uuid(),
-  botId: z.string().uuid(),
+  userId: objectIdSchema,
+  botId: objectIdSchema,
 });
 
 export const webhookReceivedSchema = z.object({

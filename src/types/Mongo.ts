@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import z from "zod";
 
 export type ObjectId = Types.ObjectId
 
@@ -11,3 +12,7 @@ export const toObjectId = (id: string): ObjectId => {
 export const isValidObjectId = (id: string): boolean => {
   return Types.ObjectId.isValid(id);
 };
+
+export const objectIdSchema = z.string().refine((val) => Types.ObjectId.isValid(val), {
+  message: "Invalid ObjectId",
+});

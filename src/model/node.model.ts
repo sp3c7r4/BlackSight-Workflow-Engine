@@ -3,7 +3,7 @@ import { Node } from '../types'
 
 interface INode extends Node, Document {}
 
-const NodeSchema = new Schema<INode>({
+export const NodeSchema = new Schema<INode>({
   name: { type: String, required: true },
   type: { type: String, required: true },
   category: { type: String, required: true },

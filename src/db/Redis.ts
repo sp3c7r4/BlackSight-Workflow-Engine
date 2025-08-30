@@ -1,6 +1,6 @@
 import R, { Redis } from 'ioredis'
 import env from '../config/env'
-import Logger from './Logger';
+import Logger from '../utils/Logger';
 
 const redis: Redis = new R({ host: env.REDIS_HOST, port: env.REDIS_PORT, lazyConnect: true })
 

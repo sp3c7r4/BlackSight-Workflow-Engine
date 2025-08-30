@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type IntegrationCategory = "google_sheet" | "stripe" | "zapier" | "airtable" | "sendgrid" | "whatsapp" | "google_calender" | "slack" | "telegram" | "messanger" | "google_voe_3";
+export type IntegrationType = "google_sheet" | "stripe" | "zapier" | "airtable" | "sendgrid" | "whatsapp" | "google_calender" | "slack" | "telegram" | "messanger" | "google_voe_3";
 export type IntegrationParams = google_sheet | stripe | zapier | airtable | sendgrid | whatsapp | google_calender | slack | telegram | messanger | google_voe_3;
 
 type google_sheet = {
@@ -84,7 +84,7 @@ type IntegrationParamsMap = {
   google_voe_3: google_voe_3;
 };
 
-export interface IntegrationNode<C extends IntegrationCategory> extends Node<IntegrationParamsMap[C]> {
-  type: "integration";
-  category: C;
+export interface IntegrationNode<C extends IntegrationType> extends Node<IntegrationParamsMap[C]> {
+  type: C;
+  category: "integration";
 }

@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type LogicCategory = "if_else" | "check_field" | "compare_tags" | "wait_delay_timer";
+export type LogicType = "if_else" | "check_field" | "compare_tags" | "wait_delay_timer";
 
 export type LogicParams = IfElse | CheckField | CompareTags | WaitDelayTimer;
 
@@ -31,7 +31,7 @@ type LogicParamsMap = {
   wait_delay_timer: WaitDelayTimer;
 };
 
-export interface LogicNode<C extends LogicCategory> extends Node<LogicParamsMap[C]> {
-  type: "logic";
-  category: C;
+export interface LogicNode<C extends LogicType> extends Node<LogicParamsMap[C]> {
+  type: C;
+  category: "logic";
 }

@@ -1,6 +1,6 @@
 import { Node } from ".";
 
-export type TriggerCategory = "form_submission" | "user_signup" | "bot_conversation_start" | "webhook_received" | "time_based_trigger";
+export type TriggerType = "form_submission" | "user_signup" | "bot_conversation_start" | "webhook_received" | "time_based_trigger";
 
 type form_submission = {
     formId: string;
@@ -38,7 +38,7 @@ type TriggerParamsMap = {
     time_based_trigger: time_based_trigger;
 };
 
-export interface TriggerNode<C extends TriggerCategory> extends Node<TriggerParamsMap[C]> {
-  type: "trigger";
-  category: C;
+export interface TriggerNode<C extends TriggerType> extends Node<TriggerParamsMap[C]> {
+  category: 'trigger';
+  type: C;
 }

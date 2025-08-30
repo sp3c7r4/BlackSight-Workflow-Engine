@@ -1,36 +1,48 @@
 import { Request, Response, Router } from "express";
 import tryCatch from "../utils/TryCatch";
+import WorkFlowController from "../controllers/workflow.controller";
+import { ObjectId } from "../types/Mongo";
+import { validateParams } from "../validator";
+import { IDSchema } from "../validator/schemas";
 
 const workflowRouter = Router()
+const workflowController = new WorkFlowController();
 
 /** Create a new workflow */
-workflowRouter.post('/start/:id', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.post('/', tryCatch( async (req: Request, res: Response) => {
+  const r = await workflowController.createWorkFlow(req.body);
+  res.status(r.statusCode).json(r);
+}));
+
+/** Start a new workflow */
+workflowRouter.post('/start/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Workflow ${id} started` });
 }));
 
 /** Stop a specific workflow */
-workflowRouter.post('/stop/:id', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.post('/stop/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Workflow ${id} stopped` });
 }));
 
 /** Get status of a specific workflow */
-workflowRouter.get('/status/:id', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.get('/status/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Status of workflow ${id}` });
 }));
 
 /** Restart a specific workflow */
-workflowRouter.post('/restart/:id', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.post('/restart/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
   res.status(200).json({ message: `Workflow ${id} restarted` });
 }));
 
 /** Get a specific workflow */
-workflowRouter.get('/:id', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.get('/:id', validateParams(IDSchema), tryCatch( async (req: Request, res: Response) => {
   const { id } = req.params;
-  res.status(200).json({ message: `Details of workflow ${id}` });
+  const r = await workflowController.fetchWorkFlow(id as unknown as ObjectId);
+  res.status(r.statusCode).json(r);
 }));
 
 export default workflowRouter;

@@ -13,6 +13,7 @@ export default function zValidator(type: string, schema: ZodSchema) {
 
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body)
       let dataToValidate: Record<string, unknown>;
       switch (type) {
         case 'body':
@@ -30,22 +31,24 @@ export default function zValidator(type: string, schema: ZodSchema) {
 
       // Validate the data
       const validatedData = await schema.parseAsync(dataToValidate);
+      console.log(validatedData)
 
       // Attach validated data back to request
       req[type] = validatedData;
 
       next();
     } catch (error) {
+      console.log(JSON.parse(error))
+      // const e = JSON.parse(error)
+      // const isErrObject = e.length === 1 && e[0].expected === 'object'
       if (error instanceof ZodError) {
         const errorMessages = error.errors.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
           code: err.code,
         }));
-
-        return res
-          .status(400)
-          .send(BAD_REQUEST('Validation failed', errorMessages));
+        /* isErrObject ? "Invalid JSON Object" : */
+        return res.status(400).send(BAD_REQUEST('Validation failed',  errorMessages));
       }
 
       console.error('Unexpected validation error:', error);
