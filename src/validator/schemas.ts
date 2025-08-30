@@ -6,7 +6,7 @@ import * as logicSchema from './extras/logic'
 import z from 'zod'
 import { objectIdSchema } from '../types/Mongo'
 
-export const createNodeSchema = z.object({
+export const createNodeSchema = z.array(z.object({
   category: z.enum(['trigger', 'action', 'logic', 'ai', 'integration']),
   type: z.string().min(2).max(100),
   workflow_id: objectIdSchema,
@@ -18,7 +18,7 @@ export const createNodeSchema = z.object({
     x: z.number().min(0),
     y: z.number().min(0),
   }),
-});
+}));
 
 export const createWorkFlowSchema = z.object({
   name: z.string().min(2).max(100),

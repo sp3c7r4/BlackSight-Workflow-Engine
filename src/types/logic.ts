@@ -6,8 +6,6 @@ export type LogicParams = IfElse | CheckField | CompareTags | WaitDelayTimer;
 
 type IfElse = {
   condition: string;
-  ifTrue: string;
-  ifFalse: string;
 };
 
 type CheckField = {

@@ -1,12 +1,14 @@
+import { ObjectId } from "mongoose";
 import ValidationEngine from "../engines/Validation";
 import NodeRepository from "../repository/NodeRepository";
 import NodeResource from "../resource/node.resource";
-import { ObjectId } from "../types/Mongo";
 import { NodeRequest } from "../types/request";
 import Response, { BAD_REQUEST, CREATED, OK } from "../utils/Response";
+import { getWorkflowById } from "../helpers/workflow.helper";
+import _ from 'lodash';
 
 interface NodeControllerInterface {
-  createNode(data: NodeRequest): Promise<Response | undefined>;
+  createNode(data: NodeRequest[]): Promise<Response | undefined>;
   fetchNodes(): Promise<Response | undefined>;
   fetchNode(id: ObjectId): Promise<Response | undefined>;
 }
@@ -20,13 +22,24 @@ class NodeController implements NodeControllerInterface {
     this.Validation = new ValidationEngine();
   }
 
-  async createNode(data: NodeRequest) {
-    const { category, config, name, position, type } = data;
-    if (!category || !config || !name || !position || !type) return BAD_REQUEST("Missing required fields");
-    this.Validation.validate(config.params, category, type);
-    console.log("Config.params", data)
+  async createNode(data: NodeRequest[]) {
+    const WORKFLOW_ID = data[0].workflow_id;
+    await getWorkflowById(WORKFLOW_ID);
 
-    const create = await this.NodeRepository.create({ category, config, name, position, type });
+    const requiredFields = ["category", "type", "config", "name", "position", "workflow_id"];
+
+    const filteredArray = _.map(data, (obj: Record<string, unknown>) => _.pick(obj, requiredFields));
+    console.log("hi spectra", filteredArray)
+    if (!filteredArray.every((item: NodeRequest) => item.category && item.config && item.name && item.position && item.type && item.workflow_id)) return BAD_REQUEST("Missing required fields");
+
+
+    for (const node of filteredArray) {
+      // console.log(node.config.params, node.category, node.type)
+      this.Validation.validate(node.config.params, node.category, node.type);
+      console.log("Config.params", node.config.params);
+    }
+
+    const create = await this.NodeRepository.bulkCreate(filteredArray);
     const nodeResourceInstance = new NodeResource(create);
     const res = nodeResourceInstance.basic();
     return CREATED("Node created successfully", res);

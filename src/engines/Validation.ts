@@ -103,7 +103,7 @@ export default class ValidationEngine {
 
   validate(body: unknown, category: Category, type: NodeType ) {
     try {
-      console.log(body)
+      // console.log(body)
       const schema = this.fetchSchema(type, category);
       return schema.parse(body);
     } catch(e) {

@@ -4,6 +4,7 @@ import Logger, { consoleErrorLog } from "../utils/Logger";
 
 export interface BaseRepositoryInterface<T extends Document> {
   create(data: Partial<T>): Promise<T | null>;
+  bulkCreate(data: Partial<T>[]): Promise<(T | null)[]>;
   findById(id: ObjectId): Promise<T | null>;
   findAll(): Promise<T[]>;
   update(id: ObjectId, data: Partial<T>): Promise<T | null>;
@@ -39,6 +40,28 @@ export default class BaseRepository<T extends Document> implements BaseRepositor
     }
 
     return result;
+  }
+
+  async bulkCreate(data: Partial<T>[]): Promise<(T | null)[]> {
+    // const session = await this.model.db.startSession();
+    let results: (T | null)[] = [];
+
+    try {
+      // await session.withTransaction(async () => {
+      //   const newDocuments = data.map(item => new this.model(item));
+      //   results = await this.model.insertMany(newDocuments, { session });
+      // });
+      const newDocuments = data.map(item => new this.model(item));
+      results = await this.model.insertMany(newDocuments);
+    } catch (error) {
+      consoleErrorLog(`Error in bulkCreate: ${error}`);
+      fileErrorLogger(error);
+      throw CE_BAD_REQUEST(`Failed to create ${this.modelName} documents`);
+    } finally {
+      // await session.endSession();
+    }
+
+    return results;
   }
 
   /**

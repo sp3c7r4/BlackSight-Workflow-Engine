@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 import tryCatch from "../utils/TryCatch";
 import WorkFlowController from "../controllers/workflow.controller";
-import { ObjectId } from "../types/Mongo";
 import { validateBody, validateParams } from "../validator";
 import { createWorkFlowSchema, IDSchema } from "../validator/schemas";
+import { ObjectId } from "mongoose";
 
 const workflowRouter = Router()
 const workflowController = new WorkFlowController();

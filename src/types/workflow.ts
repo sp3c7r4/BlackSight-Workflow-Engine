@@ -4,7 +4,7 @@ import { Node } from ".";
 interface Edge {
   source: string;
   target: string;
-  condition?: string;
+  resolves?: boolean;
 }
 
 export interface Workflow {

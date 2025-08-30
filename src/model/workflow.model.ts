@@ -27,7 +27,7 @@ const WorkFlowSchema: Schema = new Schema<IWorkflow>({
     {
       source: { type: String, required: true },
       target: { type: String, required: true },
-      condition: { type: String, required: false }
+      condition: { type: Boolean, required: false }
     }
   ],
 }, {
