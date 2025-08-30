@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { ActionType } from "./action";
 import { AiType } from "./ai";
 import { IntegrationType } from "./integration";
@@ -9,6 +10,7 @@ export type Category = 'trigger' | 'action' | 'logic' | 'ai' | 'integration';
 type Position = { x: number; y: number };
 
 export interface Node<P = unknown> {
+  workflow_id: ObjectId;
   category: Category;
   type: NodeType;
   name: string;

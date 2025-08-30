@@ -1,8 +1,11 @@
+import { ObjectId } from "mongoose";
 import ValidationEngine from "../engines/Validation";
+import { getUserById } from "../helpers/user.helper";
+import { workflowExistsByUserId } from "../helpers/workflow.helper";
 import WorkflowRepository from "../repository/WorkflowRepository";
-import { ObjectId } from "../types/Mongo";
+import WorkflowResource from "../resource/workflow.resource";
 import { WorkFlowRequest } from "../types/request";
-import Response, { BAD_REQUEST, OK } from "../utils/Response";
+import Response, { BAD_REQUEST, CREATED, OK } from "../utils/Response";
 
 interface WorkFlowControllerInterface {
   createWorkFlow(data: WorkFlowRequest): Promise<Response | undefined>;
@@ -16,18 +19,22 @@ interface WorkFlowControllerInterface {
 export default class WorkFlowController implements WorkFlowControllerInterface {
   private WorkFlowRepository: WorkflowRepository;
   private Validation: ValidationEngine;
+  
 
   constructor() {
     this.WorkFlowRepository = new WorkflowRepository();
     this.Validation = new ValidationEngine();
   }
 
-  async createWorkFlow(data: WorkFlowRequest): Promise<Response | undefined> {
-    const { name, description, nodes, edges } = data;
-    if (!name || !description || !nodes || !edges) return BAD_REQUEST("Missing required fields");
+  async createWorkFlow(data: Omit<WorkFlowRequest, 'nodes' | 'edges'>): Promise<Response | undefined> {
+    const { name, description, user_id } = data;
+    if (!name || !description || !user_id) return BAD_REQUEST("Missing required fields");
+    await Promise.all([getUserById(user_id), workflowExistsByUserId(user_id)]);
 
-    const create = await this.WorkFlowRepository.create({ name, description, nodes, edges });
-    return OK("Workflow created successfully", create);
+    const create = await this.WorkFlowRepository.create({ name, description, user_id });
+    const workflowResourceInstance = new WorkflowResource(create)
+    const res = workflowResourceInstance.basic()
+    return CREATED("Workflow created successfully", res);
   }
 
   async fetchWorkFlows(): Promise<Response | undefined> {

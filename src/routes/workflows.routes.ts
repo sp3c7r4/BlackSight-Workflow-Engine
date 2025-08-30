@@ -2,14 +2,14 @@ import { Request, Response, Router } from "express";
 import tryCatch from "../utils/TryCatch";
 import WorkFlowController from "../controllers/workflow.controller";
 import { ObjectId } from "../types/Mongo";
-import { validateParams } from "../validator";
-import { IDSchema } from "../validator/schemas";
+import { validateBody, validateParams } from "../validator";
+import { createWorkFlowSchema, IDSchema } from "../validator/schemas";
 
 const workflowRouter = Router()
 const workflowController = new WorkFlowController();
 
 /** Create a new workflow */
-workflowRouter.post('/', tryCatch( async (req: Request, res: Response) => {
+workflowRouter.post('/', validateBody(createWorkFlowSchema), tryCatch( async (req: Request, res: Response) => {
   const r = await workflowController.createWorkFlow(req.body);
   res.status(r.statusCode).json(r);
 }));

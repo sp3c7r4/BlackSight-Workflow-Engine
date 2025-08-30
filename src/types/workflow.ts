@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { Node } from ".";
 
 interface Edge {
@@ -7,6 +8,7 @@ interface Edge {
 }
 
 export interface Workflow {
+  user_id: ObjectId;
   name: string;
   description: string;
   nodes: Node[];

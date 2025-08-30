@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 interface IWorkflow extends Workflow, Document {}
 
 const WorkFlowSchema: Schema = new Schema<IWorkflow>({
-  _id: { type: ObjectId },
+  user_id: { type: ObjectId, required: true, ref: 'User', index: true },
   name: { type: String, required: true },
   description: { type: String, required: false },
   nodes: [

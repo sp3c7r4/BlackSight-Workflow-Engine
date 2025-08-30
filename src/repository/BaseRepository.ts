@@ -1,20 +1,20 @@
-import { Model, Document, Types } from "mongoose";
+import { Model, Document, ObjectId } from "mongoose";
 import { CE_BAD_REQUEST } from "../utils/Error";
 import Logger, { consoleErrorLog } from "../utils/Logger";
 
 export interface BaseRepositoryInterface<T extends Document> {
   create(data: Partial<T>): Promise<T | null>;
-  findById(id: Types.ObjectId): Promise<T | null>;
+  findById(id: ObjectId): Promise<T | null>;
   findAll(): Promise<T[]>;
-  update(id: Types.ObjectId, data: Partial<T>): Promise<T | null>;
-  delete(id: Types.ObjectId): Promise<boolean>;
+  update(id: ObjectId, data: Partial<T>): Promise<T | null>;
+  delete(id: ObjectId): Promise<boolean>;
 }
 
 const logInstance = new Logger()
 const fileErrorLogger = (e: Error) => logInstance.fileLogger.error(e)
 
 export default class BaseRepository<T extends Document> implements BaseRepositoryInterface<T> {
-  constructor(private model: Model<T>, private modelName: string) {}
+  constructor(protected model: Model<T>, private modelName: string) {}
 
   /**
    * Creates a new document in a transaction
@@ -44,7 +44,7 @@ export default class BaseRepository<T extends Document> implements BaseRepositor
   /**
    * Finds a document by ID
    */
-  async findById(id: Types.ObjectId): Promise<T | null> {
+  async findById(id: ObjectId): Promise<T | null> {
     try {
       return await this.model.findById(id).exec();
     } catch (error) {
@@ -64,7 +64,7 @@ export default class BaseRepository<T extends Document> implements BaseRepositor
   }
 
   /*  Updates a document in a transaction */
-  async update(id: Types.ObjectId, data: Partial<T>): Promise<T | null> {
+  async update(id: ObjectId, data: Partial<T>): Promise<T | null> {
     // const session = await this.model.db.startSession();
     let result: T | null = null;
 
@@ -91,7 +91,7 @@ export default class BaseRepository<T extends Document> implements BaseRepositor
   /**
    * Deletes a document in a transaction
    */
-  async delete(id: Types.ObjectId): Promise<boolean> {
+  async delete(id: ObjectId): Promise<boolean> {
     // const session = await this.model.db.startSession();
     let success = false;
 

@@ -1,9 +1,12 @@
 import { model, Schema, Document } from 'mongoose'
 import { Node } from '../types'
 
+const ObjectId = Schema.Types.ObjectId;
+
 interface INode extends Node, Document {}
 
 export const NodeSchema = new Schema<INode>({
+  workflow_id: { type: ObjectId, required: true, ref: 'Workflow' },
   name: { type: String, required: true },
   type: { type: String, required: true },
   category: { type: String, required: true },
